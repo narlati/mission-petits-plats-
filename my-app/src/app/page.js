@@ -38,11 +38,11 @@ const allRecipes = useMemo(() => {
   }));
 }, []);
 
-const filteredRecipes = useMemo(() => { 
-  return allRecipes.filter(recipe => {
+// Avec useMemo, React garantit que les hooks s'exécutent dans l'ordre. Sans useMemo, le calcul direct peut s'exécuter avant que allRecipes soit prêt.
+const filteredRecipes = (allRecipes || []).filter(recipe => {
     // 1. Recherche textuelle
     const query = searchQuery.toLowerCase().trim();
-    const matchesSearch = query === '' || 
+    const matchesSearch = query === '' ||
       recipe.title.toLowerCase().includes(query) ||
       recipe.description.toLowerCase().includes(query) ||
       recipe.ingredients.some(ing => ing.name.toLowerCase().includes(query));
@@ -63,8 +63,8 @@ const filteredRecipes = useMemo(() => {
     );
 
     return matchesSearch && hasAllIngredients && hasAllAppareils && hasAllUstensiles;
-    });
-  }, [allRecipes, searchQuery, selectedIngredients, selectedAppareils, selectedUstensiles]);
+    }
+  );
 
   // Tags disponibles (basés sur les recettes filtrées)
   const availableIngredients = useMemo(() => {
