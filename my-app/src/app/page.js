@@ -42,7 +42,7 @@ const allRecipes = useMemo(() => {
 const filteredRecipes = (allRecipes || []).filter(recipe => {
     // 1. Recherche textuelle
     const query = searchQuery.toLowerCase().trim();
-    const matchesSearch = query === '' ||
+    const matchesSearch = query.length < 3 ||
       recipe.title.toLowerCase().includes(query) ||
       recipe.description.toLowerCase().includes(query) ||
       recipe.ingredients.some(ing => ing.name.toLowerCase().includes(query));
